@@ -1,0 +1,24 @@
+{
+  "name": "functionalFlickr",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --watch index.js"
+  },
+  "repository": {},
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.16.0",
+    "data.either": "^1.5.0",
+    "data.task": "^3.1.1",
+    "express": "^4.14.1",
+    "express-ws": "^2.0.0",
+    "futurize": "^1.2.0",
+    "ramda": "^0.23.0",
+    "ramda-fantasy": "^0.7.0",
+    "request": "^2.79.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  }
+}
