@@ -1,5 +1,4 @@
-var button = document.querySelector('.name');
-var start = document.querySelector('.start');
+var form = document.querySelector('.entry-form');
 var socket = new WebSocket('ws://' + window.location.host + '/')
 
 socket.addEventListener('open', function(m) {
@@ -10,13 +9,8 @@ socket.addEventListener('message', function(m) {
   console.log(m)
 });
 
-start.addEventListener('click', function(e) {
-  e.preventDefault()
-  socket.send(JSON.stringify({data: {start: true}}))
-});
-
-button.addEventListener('click', function(e) {
+form.addEventListener('submit', function(e) {
   e.preventDefault();
-  socket.send(JSON.stringify({data: {name: 'Arthur'}}));
-});
-  
+  console.log(form.elements['name'].value)
+})
+
