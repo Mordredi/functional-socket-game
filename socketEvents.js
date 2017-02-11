@@ -1,6 +1,7 @@
 const Task = require('data.task');
-const parse = require('./utils').parse
-const getFlickr = require('./flickr').getFlickr;
+const { parse } = require('./utils');
+const { getFlickr } = require('./flickr');
+const socketEmitter = require('./socketEmitter')
 
 const startGame = (ws) => 
   getFlickr()
@@ -11,8 +12,10 @@ const startGame = (ws) =>
  
 
 module.exports = (ws) => {
-  ws.on('message', msg => {
-    var message = parse(msg).get()
-    message.data.name ? ws.send(`hello ${message.data.name}`) : startGame(ws)
+  const socketEvents = socketEmitter(ws)
+  socketEvents.on('name', data => {
+    console.log(data) 
   })
+    //var message = parse(msg).get()
+    //message.data.name ? ws.send(`hello ${message.data.name}`) : startGame(ws)
 }

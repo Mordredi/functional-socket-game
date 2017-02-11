@@ -12,7 +12,8 @@ const html = `
           <button type="submit">Enter</button>
         </form>
       </section>
-      <script src="./node_modules/steal/steal.js"></script>~
+      <script src="vendor.bundle.js"></script>
+      <script src="main.bundle.js"></script>
     </body>
   </html>
 `

@@ -3,6 +3,7 @@ const Task = require('data.task');
 const Either = require('data.either');
 
 const parse = Either.try(JSON.parse)
+const stringify = Either.try(JSON.stringify)
 
 const eitherToTask = e => 
   e.fold(Task.reject, Task.of)
@@ -16,5 +17,6 @@ const httpGet = url =>
 module.exports = {
   parse,
   eitherToTask,
-  httpGet
+  httpGet,
+  stringify
 }

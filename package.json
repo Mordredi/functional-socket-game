@@ -13,13 +13,15 @@
     "data.task": "^3.1.1",
     "express": "^4.14.1",
     "express-ws": "^2.0.0",
-    "futurize": "^1.2.0",
     "ramda": "^0.23.0",
-    "ramda-fantasy": "^0.7.0",
-    "request": "^2.79.0",
-    "steal": "^1.2.4"
+    "request": "^2.79.0"
   },
   "devDependencies": {
-    "nodemon": "^1.11.0"
+    "babel-core": "^6.22.1",
+    "babel-loader": "^6.2.10",
+    "babel-preset-es2015": "^6.22.0",
+    "nodemon": "^1.11.0",
+    "webpack": "^2.2.1",
+    "webpack-dev-middleware": "^1.10.0"
   }
 }
