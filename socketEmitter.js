@@ -7,15 +7,17 @@ function SocketEmitter() {
 
 SocketEmitter.prototype = new EventEmitter;
 
-const emitter = socketEmitter => msg =>
+const emitter = socketEmitter => msg => {
   socketEmitter.emit(msg.type, msg.data) 
+}
 
-
-module.exports = (ws) => {
+module.exports = (ws, type) => {
   const socketEmitter = new SocketEmitter();
   const readyState = emitter(socketEmitter)
-  ws.on('message', msg => {
-    compose(readyState, JSON.parse(msg)) 
-  })
+  type === 'server' 
+    ? ws.on('message', msg =>
+      readyState(JSON.parse(msg)))
+    : ws.addEventListener('message', msg =>  
+      readyState(JSON.parse(msg.data)))
   return socketEmitter;
 }

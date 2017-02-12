@@ -1,6 +1,5 @@
-const httpGet = require('./utils').httpGet;
-const parse = require('./utils').parse;
-const eitherToTask = require('./utils').eitherToTask;
+const { httpGet } = require('./http');
+const { parse, eitherToTask } = require('./utils');
 
 const apiKey = '25ab953a12c6d2a43a4d449ecccad389'
 
