@@ -1,5 +1,6 @@
 const { EventEmitter } = require('events');
 const { compose } = require('ramda')
+const Task = require('data.task')
 
 function SocketEmitter() {
   EventEmitter.call(this)
@@ -11,13 +12,23 @@ const emitter = socketEmitter => msg => {
   socketEmitter.emit(msg.type, msg.data) 
 }
 
-module.exports = (ws, type) => {
-  const socketEmitter = new SocketEmitter();
-  const readyState = emitter(socketEmitter)
-  type === 'server' 
-    ? ws.on('message', msg =>
-      readyState(JSON.parse(msg)))
-    : ws.addEventListener('message', msg =>  
-      readyState(JSON.parse(msg.data)))
-  return socketEmitter;
+
+function ServerSocket(ws, sockets) {
+  this.ws = ws;
+  this.sockets = sockets;
+  this.emit = (msg) => this.ws.send(JSON.stringify(msg))
+  this.broadcast = (msg) => this.sockets.forEach(socket => socket.send(JSON.stringify(msg)))
+  this.listen = () => new Task((rej, res) => ws.on('message', msg => res(JSON.parse(msg))))
 }
+
+
+module.exports = {
+  sockets: [],
+  addSocket(ws) {
+    const uid = Math.random().toString(36).substr(2, 16); 
+    ws.id = uid;
+    this.sockets.push(ws);
+    return new ServerSocket(ws, this.sockets)
+  }
+}
+

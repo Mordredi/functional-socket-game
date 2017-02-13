@@ -10,34 +10,16 @@ const startGame = (ws) =>
     ws.send(res)
     })
  
-const users = [] 
-
-const emit = ws => msg => ws.send(JSON.stringify(msg))
-
-const broadcast = users => msg => users.forEach(user => emit(user.connection)(msg)) 
-
 module.exports = (ws) => {
-  const uid = Math.random().toString(36).substr(2, 16); 
-  ws.id = uid;
-
-  const socketEvents = socketEmitter(ws, 'server')
-
-  const send = emit(ws);
-  ws.on('close', () => {
-     console.log(ws.id)
-     console.log('closed')
-  });
-
-  socketEvents.on('name', data => {
-    broadcast(users)({type: 'new user', data})
-    const user = {
-      name: data,
-      connection: ws
+  const socket = socketEmitter.addSocket(ws)
+  const serverMessages = ({type, data}) => {
+    switch (type) {
+      case 'name':
+        socket.emit({type: 'greeting', data: `Hello ${data}`})
+        break
     }
-    users.push(user)
-    send({type: 'greeting', data: `Hello ${data}`});
-    send({type: 'users', data: users.map(user => user.name)})
-  })
-    //var message = parse(msg).get()
-    //message.data.name ? ws.send(`hello ${message.data.name}`) : startGame(ws)
+  }
+
+  socket.listen().fork(console.log, serverMessages)
 }
+
