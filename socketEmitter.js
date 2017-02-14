@@ -21,8 +21,7 @@ function ServerSocket(ws, sockets) {
   this.listen = () => new Task((rej, res) => ws.on('message', msg => res(JSON.parse(msg))))
 }
 
-
-module.exports = {
+const serverSocket = {
   sockets: [],
   addSocket(ws) {
     const uid = Math.random().toString(36).substr(2, 16); 
@@ -32,3 +31,15 @@ module.exports = {
   }
 }
 
+function BrowserSocket(ws) {
+  this.ws = ws;
+  this.send = (msg) => this.ws.send(JSON.stringify(msg))
+  this.listen = () => new Task((rej, res) => ws.addEventListener('message', msg => res(JSON.parse(msg.data))))
+}
+
+const browserSocket = (ws) => new BrowserSocket(ws)
+
+module.exports = {
+  browserSocket,
+  serverSocket
+}

@@ -2,19 +2,17 @@ import socketEmitter from '../../socketEmitter'
 
 const ws = new WebSocket(`ws://${window.location.host}/`)
 
-//const socket = socketEmitter(ws);
+const socket = socketEmitter.browserSocket(ws);
 
 const form = document.querySelector('#entry');
 
 
 form.addEventListener('submit', (e) => {
   e.preventDefault();
-  ws.send(JSON.stringify({type: 'name', data: form['elements'].name.value}))
+  socket.send({type: 'name', data: form['elements'].name.value})
 })
 
-ws.addEventListener('message', msg => {
-  console.log(msg)
-})
+socket.listen().fork(console.log, console.log)
 
 
 //socket.on('greeting', data => console.log(data))

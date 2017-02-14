@@ -11,7 +11,7 @@ const startGame = (ws) =>
     })
  
 module.exports = (ws) => {
-  const socket = socketEmitter.addSocket(ws)
+  const socket = socketEmitter.serverSocket.addSocket(ws)
   const serverMessages = ({type, data}) => {
     switch (type) {
       case 'name':
