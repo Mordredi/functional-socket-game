@@ -14,7 +14,7 @@ const form = querySelector('#entry')
 
 const formSubmit = (e) => {
   e.preventDefault();
-  socket.send({type: 'name', data: form.runIO()['elements'].name.value})
+  socket.send({type: 'name', data: e.target.elements.name.value})
 }
 
 form
@@ -27,10 +27,7 @@ const startClick = (e) => {
   socket.send({type: 'start', data: 'start'})
 }
 
-const imageClick = id => {
-  console.log(id)
-  return socket.send({type: 'imageSelected', data: id})
-}
+const imageClick = id => socket.send({type: 'imageSelected', data: id})
 
 const start = startButton({startClick})
 

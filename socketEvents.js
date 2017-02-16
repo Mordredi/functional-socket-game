@@ -1,7 +1,7 @@
 const Task = require('data.task');
 const { parse } = require('./utils');
-const { getFlickr } = require('./flickr');
 const socketEmitter = require('./socketEmitter')
+const { startGame } = require('./game')
 
  
 module.exports = (ws) => {
@@ -11,10 +11,15 @@ module.exports = (ws) => {
       case 'name':
         return socket.emit({type: 'greeting', data: `Hello ${data}`})
       case 'start':
-        getFlickr()
+        startGame() 
           .fork(console.log, (data) => {
+            console.log(data)
             socket.broadcast({type: 'round1', data}) 
           })
+        break
+      case 'imageSelected':
+        console.log(socket)
+        console.log(`data: ${data}`)
     }
   }
 
