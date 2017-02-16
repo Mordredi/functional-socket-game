@@ -3,20 +3,18 @@ const { parse } = require('./utils');
 const { getFlickr } = require('./flickr');
 const socketEmitter = require('./socketEmitter')
 
-const startGame = (ws) => 
-  getFlickr()
-    .map(JSON.stringify)
-    .fork(console.log, function(res) {
-    ws.send(res)
-    })
  
 module.exports = (ws) => {
   const socket = socketEmitter.serverSocket.addSocket(ws)
   const serverMessages = ({type, data}) => {
     switch (type) {
       case 'name':
-        socket.emit({type: 'greeting', data: `Hello ${data}`})
-        break
+        return socket.emit({type: 'greeting', data: `Hello ${data}`})
+      case 'start':
+        getFlickr()
+          .fork(console.log, (data) => {
+            socket.broadcast({type: 'round1', data}) 
+          })
     }
   }
 

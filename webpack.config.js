@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 
 module.exports = {
+  devtool: 'inline-source-map',
   entry: {
    main: './src/js/index.js',
   },
@@ -30,6 +31,8 @@ module.exports = {
       minChunks(module) {
         return module.context && module.context.indexOf('node_modules') !== -1;
       }
-    })
+    }),
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoEmitOnErrorsPlugin()
   ]
 }
