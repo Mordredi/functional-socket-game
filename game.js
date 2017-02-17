@@ -12,14 +12,30 @@ const shuffle = (images) => {
     images[m] = images[i]
     images[i] = t
   }
-
   return images
 }
 
-const startGame = () => {
-  return getFlickr()
-    .map(shuffle)
+const selectImages = curry((x, y, images) => images.slice(x, y))
+
+function Game() {
+  this.players = {}
+  this.round = 1;
+  this.newPlayer = (id, name) => this.players[id] = {name};
+
+  const setImages = (images) => {
+    this.images = images;
+    return images
+  }
+
+  this.start = () =>
+    getFlickr()  
+      .map(shuffle)
+      .map(setImages)
+      .map(selectImages(0, 2))
+  
 }
+
+const startGame = () => new Game()
 
 module.exports = {
   startGame

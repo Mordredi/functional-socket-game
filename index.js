@@ -13,6 +13,8 @@ const socket = require('./socket');
 const socketEvents = require('./socketEvents');
 const webpackConfig = require('./webpack.config')
 
+const { startGame } = require('./game')
+
 const app = express();
 const compiler = webpack(webpackConfig)
 
@@ -28,8 +30,9 @@ app.use(webpackDevMiddleware(compiler, {
 app.use(webpackHotMiddleware(compiler))
 
 const main = new Task((rej, res) => {
+  const game = startGame()
   server(app);
-  socket(app).fork(console.log, socketEvents)
+  socket(app).fork(console.log, socketEvents(game))
   return app.listen(4500, err => 
     err ? rej(err) : res('Express: listening on 3000')
   )

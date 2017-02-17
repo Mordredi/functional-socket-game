@@ -1,19 +1,19 @@
 const Task = require('data.task');
+const { curry } = require('ramda');
 const { parse } = require('./utils');
 const socketEmitter = require('./socketEmitter')
-const { startGame } = require('./game')
 
- 
-module.exports = (ws) => {
+module.exports = curry((game, ws) => {
   const socket = socketEmitter.serverSocket.addSocket(ws)
   const serverMessages = ({type, data}) => {
     switch (type) {
       case 'name':
+        game.newPlayer(ws.id, data)
         return socket.emit({type: 'greeting', data: `Hello ${data}`})
       case 'start':
-        startGame() 
+        game
+          .start()
           .fork(console.log, (data) => {
-            console.log(data)
             socket.broadcast({type: 'round1', data}) 
           })
         break
@@ -24,5 +24,5 @@ module.exports = (ws) => {
   }
 
   socket.listen().fork(console.log, serverMessages)
-}
+})
 
