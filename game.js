@@ -1,4 +1,5 @@
 const { getFlickr } = require('./flickr')
+const { curry } = require('ramda')
 
 const players = {};
 

@@ -11,6 +11,10 @@ export const append = curry((elem, container) => IO(() => {
   return container
 }))
 
+export const replaceElement = curry((newElem, oldElem, container) => IO(() => 
+  container.replaceChild(newElem.runIO(), oldElem.runIO())
+))
+
 export const appendTo = curry((container, elem) => IO(() => container.append(elem)))
 
 export const createElement = elem => IO(() => document.createElement(elem))

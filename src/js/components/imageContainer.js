@@ -6,10 +6,10 @@ const appendToContainer = reduce((a, b) =>
   a.map(append(b)).runIO()
 )
 
-const mapImages = (images, imageClick) => images.map(({id, secret, farm, server, title})=> flickrImage({id, secret, farm, server, title, imageClick}))
+const mapImages = map(flickrImage)
 
-export const imageContainer = ({images, imageClick}) => {
+export const imageContainer = ({images}) => {
   const container = compose(chain(setAttribute({attribute: 'class', value: 'image-container'})), createElement)('section')
-  return appendToContainer(container)(mapImages(images, imageClick))
+  return appendToContainer(container)(mapImages(images))
 }
 

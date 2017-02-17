@@ -3,7 +3,9 @@ import { querySelectorAll, querySelector, append, appendTo, removeElement, onSub
 import { startButton } from './components/startButton'
 import { imageContainer } from './components/imageContainer'
 import { nameContainer } from './components/nameContainer'
- 
+import { timer } from './components/timer'
+import { gameTimer } from './manipulations'
+
 const ws = new WebSocket(`ws://${window.location.host}/`)
 
 const body = querySelector('body')
@@ -56,10 +58,13 @@ const serverMessages = ({type, data}) => {
   switch (type) {
     case 'greeting':
       return displayName(data)
-    case 'round1':
-      querySelector('.btn-start').chain(removeElement).runIO()
+    case 'roundStart':
+      const {round, images} = data;
+      if (round === 1) { querySelector('.btn-start').chain(removeElement).runIO() }
       body
-        .chain(append(imageContainer({images:data, imageClick})))
+        .chain(append(timer({number: 10})))
+        .chain(append(imageContainer({images, imageClick})))
+        .chain(gameTimer)
         .runIO()
   }
 }

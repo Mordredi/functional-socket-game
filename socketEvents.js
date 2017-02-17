@@ -14,7 +14,7 @@ module.exports = curry((game, ws) => {
         game
           .start()
           .fork(console.log, (data) => {
-            socket.broadcast({type: 'round1', data}) 
+            socket.broadcast({type: 'roundStart', data: { images: data, round: 1}}) 
           })
         break
       case 'imageSelected':
