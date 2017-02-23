@@ -11,7 +11,7 @@ export const click$ = selector => Observable.fromEvent(selector, 'click')
  
 export const seconds$ = timer$(1000)
 
-export const tenSeconds$ = seconds$(10)
+export const tenSeconds$ = seconds$(10).share()
 
 export const threeSeconds$ = seconds$(3)
 

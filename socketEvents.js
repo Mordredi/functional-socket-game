@@ -19,7 +19,7 @@ module.exports = curry((game, ws) => {
         break
       case 'imageSelected':
         console.log(socket)
-        console.log(`data: ${data}`)
+        console.log(`data: ${data.id}`)
     }
   }
 

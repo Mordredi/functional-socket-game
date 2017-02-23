@@ -1,41 +1,33 @@
 import { tenSeconds$, click$ } from '../streams'
-import { querySelector, replaceElement, querySelectorAll } from '../dom'
+import { querySelector, getElementById, addClass, replaceElement, querySelectorAll } from '../dom'
 import { timer } from '../components/timer'
+import { curry, chain, compose } from 'ramda'
 import { IO } from 'ramda-fantasy'
-import { Observable } from 'rxjs/Rx'
 
+export const gameTimer = curry((socket, container) => IO(() => {
 
-export const gameTimer = container => IO(() => {
-
-  const flickrClick$ = click$(querySelectorAll('.flickr-image').runIO())
+  const clickFlickr$ = click$(querySelectorAll('.flickr-image').runIO())
     .map(e => e.target.id)
+    .do(e => compose(chain(addClass('selected')), getElementById)(e).runIO())
     .take(1)
-    .map(x => {
-      console.log(`click ${x}`)
-      return x
-    }
+  
+    tenSeconds$
+      .withLatestFrom(
+        clickFlickr$
+      ) 
+      .reduce((acc, x) => x[0] !== 'start' && acc[0] === 'start' ? x : acc)
+    .subscribe(
+      x => socket.send({type: 'imageSelected', data: { time: x[0], id: x[1]}}),
     )
 
   tenSeconds$
-    .map(number => {
-      console.log(`timer ${number}`)
-      replaceElement(timer({number}), querySelector('.timer-number'), container).runIO()
-    })
-
-
-  Observable.combineLatest(
-    tenSeconds$,
-    flickrClick$,
-    (number, id) => ({number, id})
-
-  )
     .subscribe(
-      ({number, id}) => {
-        console.log(number, id)
+      (number) => {
+        replaceElement(timer({number}), querySelector('.timer-number'), container).runIO()
       },
       console.log,
-      (x) => console.log(x)
+      () => console.log('done!')
     )
-})
+}))
 
 

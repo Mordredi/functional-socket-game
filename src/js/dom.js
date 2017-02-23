@@ -6,6 +6,8 @@ export const querySelectorAll = selector => IO(() => document.querySelectorAll(s
 
 export const querySelector = selector => IO(() => document.querySelector(selector))
 
+export const getElementById = selector => IO(() => document.getElementById(selector))
+
 export const append = curry((elem, container) => IO(() => {
   container.append(elem.runIO()) 
   return container

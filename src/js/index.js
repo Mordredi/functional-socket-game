@@ -29,8 +29,6 @@ const startClick = (e) => {
   socket.send({type: 'start', data: 'start'})
 }
 
-const imageClick = id => socket.send({type: 'imageSelected', data: id})
-
 const start = startButton({startClick})
 
 const displayName = (name) => {
@@ -63,8 +61,8 @@ const serverMessages = ({type, data}) => {
       if (round === 1) { querySelector('.btn-start').chain(removeElement).runIO() }
       body
         .chain(append(timer({number: 10})))
-        .chain(append(imageContainer({images, imageClick})))
-        .chain(gameTimer)
+        .chain(append(imageContainer({images})))
+        .chain(gameTimer(socket))
         .runIO()
   }
 }
